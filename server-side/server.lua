@@ -23,7 +23,11 @@ RegisterCommand("helicrash",function(source,args,rawCommand)
     if not vRP.hasPermission(user_id, permAdmin) then
         return
     end
-    vCLIENT.createProps(-1)
+        
+    local math = math.random(#coords)
+    
+
+    vCLIENT.createProps(-1,coords[math].x, coords[math].y, coords[math].z)
     TriggerClientEvent('Notify',-1,'HELICRASH','Um helicóptero de carga foi interceptado, siga as cordenadas enviadas em seu gps para coletar as cargas.')
 end)
 
