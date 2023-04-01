@@ -38,27 +38,41 @@ end
 src.collectItem = function()
     local source = source 
     local user_id = vRP.getUserId(source)
-    local math = math.random(#items)
+    local randomItemIndex = math.random(#items)
     local identity = vRP.getUserIdentity(user_id)
     local itemsReceived = ''
     local resultItems = {}
-
-    for k,v in pairs(items[math]) do
-        
-        if v.money then 
-            vRP.giveMoney(user_id,v.amount)
-        else
-            vRP.giveInventoryItem(user_id,v.item,v.amount)
-        end
-
-        table.insert(resultItems,{ name = vRP.itemNameList(v.item), amount = vRP.format(v.amount) })
-        itemsReceived = itemsReceived..' '..vRP.format(v.amount)..' '..vRP.itemNameList(v.item)..''
-
+  
+    local function giveItem(item)
+      if item.money then 
+        vRP.giveMoney(user_id, item.amount)
+      else
+        vRP.giveInventoryItem(user_id, item.item, item.amount)
+      end
     end
-    SendWebhookMessage(webhook,"```prolog\n[ID]: "..user_id.." "..identity.name.." "..identity.firstname.." \n[===========REVINDICOU O HELI-CRASH ==========]\n[ITENS]: "..itemsReceived..os.date("\n[Data]: %d/%m/%Y [Hora]: %H:%M:%S").." \r```")
+  
+    local function addItemToResultList(item)
+      table.insert(resultItems, { name = vRP.itemNameList(item.item), amount = vRP.format(item.amount) })
+      itemsReceived = itemsReceived..' '..vRP.format(item.amount)..' '..vRP.itemNameList(item.item)
+    end
+  
+    for k, item in pairs(items[randomItemIndex]) do
+      giveItem(item)
+      addItemToResultList(item)
+    end
+  
+    local message = string.format(
+      "```prolog\n[ID]: %s %s %s\n[===========REVINDICOU O HELI-CRASH ==========]\n[ITENS]: %s %s\r```",
+      user_id,
+      identity.name,
+      identity.firstname,
+      itemsReceived,
+      os.date("[Data]: %d/%m/%Y [Hora]: %H:%M:%S")
+    )
+  
+    SendWebhookMessage(webhook, message)
     TriggerClientEvent('chatMessage', -1, '[Heli-Crash]  '..identity.name.." "..identity.firstname .. " [" .. user_id .. "]", {255, 0, 0}, 'Coletou '..itemsReceived..' ')
-end
-
+  end
 
 src.finishEvent = function(blip)
     vCLIENT.delMarker(-1,blip)
