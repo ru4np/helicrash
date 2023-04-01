@@ -6,15 +6,6 @@ src = {}
 Tunnel.bindInterface(GetCurrentResourceName(), src)
 vSERVER = Tunnel.getInterface(GetCurrentResourceName())
 
---- PROP: p_crahsed_heli_s
---- loot ex_prop_adv_case
-
-
-Citizen.CreateThread(function() 
-    Wait(1000)
-    TriggerServerEvent(GetCurrentResourceName()..':auth', tostring(GetCurrentServerEndpoint()):gsub('.+:(%d+)','%1'))
-end)
-
 
 local helicopter = nil
 local eventReady = false

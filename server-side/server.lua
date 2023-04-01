@@ -29,13 +29,13 @@ end)
 
 
 
-src.syncDelObjects = function(entity)
+src.synchronizeDeletedObjects = function(entity)
     for k,v in pairs(vRP.getUsers()) do
         vCLIENT.delObject(-1,entity)
     end
 end
 
-src.collectItem = function()
+src.collectRandomItem = function()
     local source = source 
     local user_id = vRP.getUserId(source)
     local randomItemIndex = math.random(#items)
