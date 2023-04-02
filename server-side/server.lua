@@ -34,9 +34,7 @@ end)
 
 
 src.syncDelObjects = function(entity)
-    for k,v in pairs(vRP.getUsers()) do
-        vCLIENT.delObject(-1,entity)
-    end
+    vCLIENT.delObject(-1,entity)
 end
 
 src.collectItem = function()
